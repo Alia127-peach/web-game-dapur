@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KimiaMania - Belajar Kimia Interaktif</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        nav {
+            background-color: var(--dark);
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover {
+            background-color: var(--primary);
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .hero {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .feature-card p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .kitchen-lab {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .kitchen-lab h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .lab-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1.5rem;
+        }
+        
+        .ingredients {
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .ingredient {
+            background-color: white;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+            cursor: grab;
+            border: 2px solid #ddd;
+            text-align: center;
+        }
+        
+        .ingredient:hover {
+            border-color: var(--primary);
+        }
+        
+        .experiment-area {
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 8px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .beaker {
+            width: 150px;
+            height: 180px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 3px solid #999;
+            border-top: none;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+        
+        .beaker::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -10px;
+            right: -10px;
+            height: 15px;
+            border: 3px solid #999;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .liquid {
+            width: 100%;
+            height: 0%;
+            background-color: transparent;
+            transition: all 0.8s;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .reaction-info {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .score-display {
+            background-color: var(--dark);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .lab-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Animation classes */
+        .bubble {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: bubbleRise 2s ease-in infinite;
+        }
+        
+        @keyframes bubbleRise {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) scale(0.5);
+                opacity: 0;
+            }
+        }
+        
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .glow {
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--primary), 0 0 20px var(--primary); }
+            to { box-shadow: 0 0 10px #fff, 0 0 15px var(--secondary), 0 0 20px var(--secondary), 0 0 25px var(--secondary); }
+        }
+        
+        .pop-up {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 100;
+            max-width: 500px;
+            width: 90%;
+            display: none;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 99;
+            display: none;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close-btn:hover {
+            color: var(--accent);
+        }
+        
+        .draggable {
+            cursor: grab;
+        }
+        
+        .draggable:active {
+            cursor: grabbing;
+        }
+        
+        /* Quiz styles */
+        .quiz-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+        
+        .quiz-question {
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        
+        .quiz-options {
+            display: grid;
+            gap: 0.5rem;
+        }
+        
+        .quiz-option {
+            padding: 0.8rem;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .quiz-option.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .quiz-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .quiz-feedback.correct {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid var(--secondary);
+        }
+        
+        .quiz-feedback.incorrect {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>KimiaMania</h1>
+        <p>Belajar Kimia Melalui Simulasi Kehidupan Sehari-hari</p>
+    </header>
+    
+    <nav>
+        <a href="#beranda">Beranda</a>
+        <a href="#dapur-molekuler">Dapur Molekuler</a>
+        <a href="#lab-rumah">Lab Rumah Tangga</a>
+        <a href="#kimia-sekitar">Kimia di Sekitar Kita</a>
+        <a href="#tantangan">Tantangan Kimia</a>
+    </nav>
+    
+    <main>
+        <section id="beranda" class="hero">
+            <h2>Selamat Datang di KimiaMania!</h2>
+            <p>Jelajahi dunia kimia melalui simulasi interaktif yang menghubungkan konsep-konsep kimia dengan aktivitas sehari-hari. Belajar kimia jadi lebih menyenangkan!</p>
+            <a href="#dapur-molekuler" class="btn">Mulai Eksperimen</a>
+        </section>
+        
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🧪</div>
+                <h3>Dapur Molekuler</h3>
+                <p>Simulasi dapur virtual dimana kamu dapat mencampur berbagai bahan sehari-hari dan melihat reaksi kimia yang terjadi.</p>
+                <a href="#dapur-molekuler" class="btn">Eksplorasi</a>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🏠</div>
+                <h3>Lab Rumah Tangga</h3>
+                <p>Identifikasi dan bereksperimen dengan bahan kimia di rumah untuk memahami sifat dan reaksinya.</p>
+                <a href="#lab-rumah" class="btn">Coba Sekarang</a>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>Kimia di Sekitar Kita</h3>
+                <p>Temukan konsep kimia pada benda-benda di sekitarmu melalui peta interaktif yang menarik.</p>
+                <a href="#kimia-sekitar" class="btn">Jelajahi</a>
+            </div>
+        </section>
+        
+        <section id="dapur-molekuler" class="kitchen-lab">
+            <h2>Dapur Molekuler</h2>
+            <p>Seret dan letakkan bahan-bahan ke dalam gelas kimia untuk melihat reaksi kimia yang terjadi!</p>
+            
+            <div class="lab-container">
+                <div class="ingredients">
+                    <h3>Bahan-bahan</h3>
+                    <div class="ingredient" draggable="true" data-ingredient="vinegar">Cuka (CH₃COOH)</div>
+                    <div class="ingredient" draggable="true" data-ingredient="baking-soda">Soda Kue (NaHCO₃)</div>
+                    <div class="ingredient" draggable="true" data-ingredient="water">Air (H₂O)</div>
+                    <div class="ingredient" draggable="true" data-ingredient="sugar">Gula (C₁₂H₂₂O₁₁)</div>
+                    <div class="ingredient" draggable="true" data-ingredient="salt">Garam (NaCl)</div>
+                </div>
+                
+                <div class="experiment-area">
+                    <div class="beaker">
+                        <div class="liquid"></div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button id="mix-btn" class="btn">Campur</button>
+                        <button id="reset-btn" class="btn">Reset</button>
+                    </div>
+                    
+                    <div class="reaction-info">
+                        <p>Seret bahan ke dalam gelas kimia lalu klik "Campur" untuk melihat reaksi.</p>
+                    </div>
+                    
+                    <div class="score-display">
+                        Skor: <span id="score">0</span> poin
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-container">
+                <h3>Quiz Cepat</h3>
+                <div class="quiz-question">
+                    Apa yang terjadi ketika cuka (CH₃COOH) dan soda kue (NaHCO₃) dicampur?
+                </div>
+                <div class="quiz-options">
+                    <div class="quiz-option" data-correct="true">Terjadi reaksi asam-basa yang menghasilkan gas CO₂</div>
+                    <div class="quiz-option">Terjadi reaksi oksidasi yang menghasilkan air</div>
+                    <div class="quiz-option">Tidak terjadi reaksi apapun</div>
+                    <div class="quiz-option">Terjadi reaksi endoterm yang menyerap panas</div>
+                </div>
+                <div class="quiz-feedback"></div>
+                <button id="submit-quiz" class="btn" style="margin-top: 1rem;">Periksa Jawaban</button>
+            </div>
+        </section>
+    </main>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="pop-up" id="reaction-popup">
+        <span class="close-btn">&times;</span>
+        <h3>Reaksi Kimia</h3>
+        <div id="reaction-details">
+            <!-- This will be filled dynamically -->
+        </div>
+        <button class="btn" id="continue-btn">Lanjutkan</button>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 KimiaMania - Aplikasi Pembelajaran Kimia Interaktif</p>
+    </footer>
+    
+    <script>
+        // Variables to track ingredients in beaker
+        let beakerContents = [];
+        let score = 0;
+        const scoreDisplay = document.getElementById('score');
+        const reactionInfo = document.querySelector('.reaction-info');
+        const liquid = document.querySelector('.liquid');
+        const beaker = document.querySelector('.beaker');
+        const mixBtn = document.getElementById('mix-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const ingredients = document.querySelectorAll('.ingredient');
+        const popup = document.getElementById('reaction-popup');
+        const overlay = document.getElementById('overlay');
+        const closeBtn = document.querySelector('.close-btn');
+        const continueBtn = document.getElementById('continue-btn');
+        const reactionDetails = document.getElementById('reaction-details');
+        
+        // Drag and drop functionality
+        ingredients.forEach(ingredient => {
+            ingredient.addEventListener('dragstart', dragStart);
+        });
+        
+        document.querySelector('.experiment-area').addEventListener('dragover', dragOver);
+        document.querySelector('.experiment-area').addEventListener('drop', drop);
+        
+        function dragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.ingredient);
+        }
+        
+        function dragOver(e) {
+            e.preventDefault();
+        }
+        
+        function drop(e) {
+            e.preventDefault();
+            const ingredientType = e.dataTransfer.getData('text/plain');
+            addIngredient(ingredientType);
+        }
+        
+        function addIngredient(type) {
+            if (!beakerContents.includes(type)) {
+                beakerContents.push(type);
+                updateBeaker();
+                reactionInfo.textContent = `Bahan ${getIngredientName(type)} telah ditambahkan.`;
+            } else {
+                reactionInfo.textContent = `Bahan ${getIngredientName(type)} sudah ada dalam gelas kimia.`;
+            }
+        }
+        
+        function getIngredientName(type) {
+            const names = {
+                'vinegar': 'Cuka (CH₃COOH)',
+                'baking-soda': 'Soda Kue (NaHCO₃)',
+                'water': 'Air (H₂O)',
+                'sugar': 'Gula (C₁₂H₂₂O₁₁)',
+                'salt': 'Garam (NaCl)'
+            };
+            return names[type] || type;
+        }
+        
+        function updateBeaker() {
+            // Update liquid height based on number of ingredients
+            const height = Math.min(20 + (beakerContents.length * 20), 100);
+            liquid.style.height = `${height}%`;
+            
+            // Update liquid color based on ingredients
+            if (beakerContents.length === 0) {
+                liquid.style.backgroundColor = 'transparent';
+            } else if (beakerContents.includes('vinegar') && !beakerContents.includes('baking-soda')) {
+                liquid.style.backgroundColor = 'rgba(255, 255, 200, 0.7)'; // Light yellow for vinegar
+            } else if (beakerContents.includes('baking-soda') && !beakerContents.includes('vinegar')) {
+                liquid.style.backgroundColor = 'rgba(255, 255, 255, 0.9)'; // White-ish for baking soda
+            } else if (beakerContents.includes('water') && beakerContents.length === 1) {
+                liquid.style.backgroundColor = 'rgba(200, 200, 255, 0.5)'; // Light blue for water
+            } else if (beakerContents.includes('sugar')) {
+                liquid.style.backgroundColor = 'rgba(255, 255, 255, 0.7)'; // Clear for sugar water
+            } else if (beakerContents.includes('salt')) {
+                liquid.style.backgroundColor = 'rgba(240, 240, 240, 0.7)'; // Slightly white for salt water
+            }
+            
+            // Special case for vinegar + baking soda
+            if (beakerContents.includes('vinegar') && beakerContents.includes('baking-soda')) {
+                liquid.style.backgroundColor = 'rgba(220, 220, 220, 0.8)'; // Bubbly white
+            }
+        }
+        
+        // Mix button functionality
+        mixBtn.addEventListener('click', () => {
+            if (beakerContents.length < 2) {
+                reactionInfo.textContent = 'Tambahkan setidaknya 2 bahan untuk mencampur.';
+                return;
+            }
+            
+            beaker.classList.add('shake');
+            setTimeout(() => {
+                beaker.classList.remove('shake');
+                checkReaction();
+            }, 500);
+        });
+        
+        function checkReaction() {
+            // Check for vinegar + baking soda reaction
+            if (beakerContents.includes('vinegar') && beakerContents.includes('baking-soda')) {
+                showReactionPopup({
+                    title: 'Reaksi Asam-Basa: Cuka + Soda Kue',
+                    description: 'Kamu telah membuat reaksi asam-basa! Cuka (asam asetat) bereaksi dengan soda kue (natrium bikarbonat) menghasilkan garam natrium asetat, air, dan gas karbon dioksida (CO₂).',
+                    equation: 'CH₃COOH + NaHCO₃ → CH₃COONa + H₂O + CO₂↑',
+                    points: 10,
+                    effect: 'bubbles'
+                });
+            }
+            // Check for dissolving sugar in water
+            else if (beakerContents.includes('water') && beakerContents.includes('sugar')) {
+                showReactionPopup({
+                    title: 'Pelarutan: Gula dalam Air',
+                    description: 'Kamu telah membuat larutan gula! Gula terlarut dalam air karena ikatan hidrogennya dengan molekul air. Ini adalah contoh larutan homogen.',
+                    equation: 'C₁₂H₂₂O₁₁(s) + H₂O(l) → C₁₂H₂₂O₁₁(aq)',
+                    points: 5,
+                    effect: 'dissolve'
+                });
+            }
+            // Check for dissolving salt in water
+            else if (beakerContents.includes('water') && beakerContents.includes('salt')) {
+                showReactionPopup({
+                    title: 'Pelarutan Ionik: Garam dalam Air',
+                    description: 'Kamu telah membuat larutan garam! Natrium klorida terurai menjadi ion Na⁺ dan Cl⁻ dalam air. Ini adalah contoh larutan elektrolit.',
+                    equation: 'NaCl(s) + H₂O(l) → Na⁺(aq) + Cl⁻(aq)',
+                    points: 5,
+                    effect: 'dissolve'
+                });
+            }
+            else {
+                reactionInfo.textContent = 'Tidak ada reaksi kimia yang signifikan terjadi dengan campuran bahan ini.';
+            }
+        }
+        
+        function showReactionPopup(reaction) {
+            // Show the popup with reaction details
+            reactionDetails.innerHTML = `
+                <h4>${reaction.title}</h4>
+                <p>${reaction.description}</p>
+                <div style="background-color: #f5f5f5; padding: 10px; margin: 10px 0; text-align: center; font-weight: bold;">
+                    ${reaction.equation}
+                </div>
+                <p>+ ${reaction.points} poin!</p>
+            `;
+            
+            popup.style.display = 'block';
+            overlay.style.display = 'block';
+            
+            // Apply special effects if needed
+            if (reaction.effect === 'bubbles') {
+                createBubbles();
+            }
+            
+            // Add points
+            score += reaction.points;
+            scoreDisplay.textContent = score;
+        }
+        
+        function createBubbles() {
+            // Create bubble animation in the beaker
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const bubble = document.createElement('div');
+                    bubble.classList.add('bubble');
+                    const size = Math.random() * 10 + 5;
+                    bubble.style.width = size + 'px';
+                    bubble.style.height = size + 'px';
+                    bubble.style.left = (Math.random() * 130 + 10) + 'px';
+                    bubble.style.bottom = (Math.random() * 50) + 'px';
+                    beaker.appendChild(bubble);
+                    
+                    // Remove bubble after animation
+                    setTimeout(() => {
+                        bubble.remove();
+                    }, 2000);
+                }, i * 200);
+            }
+        }
+        
+        // Reset button
+        resetBtn.addEventListener('click', () => {
+            beakerContents = [];
+            updateBeaker();
+            reactionInfo.textContent = 'Gelas kimia telah dikosongkan.';
+        });
+        
+        // Close popup
+        closeBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+        
+        continueBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+        
+        // Quiz functionality
+        const quizOptions = document.querySelectorAll('.quiz-option');
+        const submitQuizBtn = document.getElementById('submit-quiz');
+        const quizFeedback = document.querySelector('.quiz-feedback');
+        
+        quizOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Clear previous selection
+                quizOptions.forEach(opt => opt.classList.remove('selected'));
+                // Select current option
+                option.classList.add('selected');
+            });
+        });
+        
+        submitQuizBtn.addEventListener('click', () => {
+            const selectedOption = document.querySelector('.quiz-option.selected');
+            
+            if (!selectedOption) {
+                quizFeedback.textContent = 'Silakan pilih salah satu jawaban terlebih dahulu.';
+                quizFeedback.className = 'quiz-feedback';
+                quizFeedback.style.display = 'block';
+                return;
+            }
+            
+            if (selectedOption.dataset.correct === 'true') {
+                quizFeedback.textContent = 'Benar! Reaksi antara cuka dan soda kue memang menghasilkan gas CO₂ yang menyebabkan gelembung.';
+                quizFeedback.className = 'quiz-feedback correct';
+                // Add bonus points
+                score += 5;
+                scoreDisplay.textContent = score;
+            } else {
+                quizFeedback.textContent = 'Jawaban kurang tepat. Cuka (asam asetat) dan soda kue (natrium bikarbonat) bereaksi menghasilkan natrium asetat, air, dan karbon dioksida (CO₂) yang terlihat sebagai gelembung.';
+                quizFeedback.className = 'quiz-feedback incorrect';
+            }
+            
+            quizFeedback.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
